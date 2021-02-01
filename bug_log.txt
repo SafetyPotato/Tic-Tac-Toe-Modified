@@ -1,0 +1,1 @@
+If player chooses to change image, but doesn't select an image, it deletes the default image name from db.

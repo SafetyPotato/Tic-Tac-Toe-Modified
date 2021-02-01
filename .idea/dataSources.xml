@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="player" uuid="8593e05a-460d-4846-a59d-28ea0807f58c">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\PyCharmProjects\ticTacToe\player.db</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="gamer" uuid="7d82d691-3dff-47ce-afa7-c97fa8ce10c2">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\PyCharmProjects\ticTacToe\gamer.db</jdbc-url>
+    </data-source>
+  </component>
+</project>
