@@ -7,10 +7,12 @@ import tkinter.font as ft
 from tkinter import filedialog
 from typing import Dict
 from PIL import ImageTk, Image
-
+import os
 import copy
 
+
 class OptionWindow(tk.Tk):
+
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -33,6 +35,7 @@ class OptionWindow(tk.Tk):
         self.create_buttons()
         self.create_radioButtons()
 
+
     def create_frames(self):
         self.frame0_0 = tk.Frame(self.mainFrame)
         self.frame1_0 = tk.Frame(self.mainFrame)
@@ -43,6 +46,7 @@ class OptionWindow(tk.Tk):
         self.frame1_0.grid(row=1, column=0, sticky="NW", columnspan=1)
         self.frame2_0.grid(row=2, column=0, sticky="NW", columnspan=1)
         self.frame3_1.grid(row=3, column=1, sticky="S", columnspan=1)
+
 
     def create_labels(self):
         label_entry = tk.Label(self.frame1_0, text="Board Size", font=ft.Font(size=10, weight="bold"))
@@ -64,6 +68,7 @@ class OptionWindow(tk.Tk):
         self.entry_xSize.grid(row=1, column=0, sticky="NW", padx=(20, 0), columnspan=1)
         self.entry_ySize.grid(row=1, column=2, sticky="NW", columnspan=1)
         self.entry_tally2win.grid(row=3, column=0, sticky="NW", columnspan=15, padx = 20)
+
 
     def create_buttons(self):
         #Radio buttons need to be turned off when hitting default game in the event that custom game is chosen after
@@ -98,7 +103,6 @@ class OptionWindow(tk.Tk):
         self.radio_5player.grid(row=1, column=3, sticky="NW", columnspan=1)
 
 
-
     def start_game(self, x, y, numPlayers, tally2win):
         #Check if all data is filled out
         if (len(x) == 0 or len(y) == 0 or numPlayers == 0 or tally2win == None):
@@ -127,6 +131,7 @@ class OptionWindow(tk.Tk):
         self.lastRadioPressed = num
         self.set_default_data(num)
 
+
     def open_player_window(self, numPlayers):
         if(numPlayers == 0):
             self.print_error("Player Names")
@@ -140,6 +145,7 @@ class OptionWindow(tk.Tk):
             self.player_window.deiconify()
         else:
             self.player_window = PlayerWindow(self, numPlayers)
+
 
     def print_error(self, errorType):
 
@@ -158,6 +164,7 @@ class OptionWindow(tk.Tk):
         message_error.grid(row=0, column=0)
         button_ok.grid(row=1, column=0, pady=(0, 20))
 
+
     def set_default_data(self, numPlayers):
 
         self.playerData = {}
@@ -165,6 +172,8 @@ class OptionWindow(tk.Tk):
 
         for i in range(numPlayers):
             self.playerData["Player " + str(i + 1)] = imgNames[i]
+
+
 
 
 class PlayerWindow(tk.Toplevel):
@@ -191,12 +200,12 @@ class PlayerWindow(tk.Toplevel):
         self.frame_player_display.grid(row=1, column=1, sticky="wn", padx=7, pady=(5, 13), rowspan=1, columnspan=1)
         self.frame_right.grid(row=1, column=2, sticky="wn", rowspan=1, columnspan=1)
 
-
         self.fill_scoreboard_frame()
         self.update_records()
         self.fill_entry_frame()
         self.fill_player_frame()
         self.fill_right_frame()
+
 
     def close_window(self):
 
@@ -208,6 +217,7 @@ class PlayerWindow(tk.Toplevel):
         else:
             self.destroy()
 
+
     def fill_player_frame(self):
 
         self.selectTree = ttk.Treeview(self.frame_player_display, height=5)
@@ -217,6 +227,7 @@ class PlayerWindow(tk.Toplevel):
         self.selectTree.heading("#0", text="Players", anchor=tk.W)
 
         self.selectTree.grid(row=0, column=0, sticky='nsew')
+
 
     def fill_right_frame(self):
 
@@ -229,6 +240,7 @@ class PlayerWindow(tk.Toplevel):
 
         self.check.grid(row=0, column=0, pady=(40, 20))
         self.button_enter.grid(row=1, column=0)
+
 
     def fill_scoreboard_frame(self):
 
@@ -263,6 +275,7 @@ class PlayerWindow(tk.Toplevel):
         self.button_select.grid(row=2, column=2, columnspan=1, sticky='w')
         self.button_remove.grid(row=2, column=3, columnspan=1, sticky='w')
 
+
     def fill_entry_frame(self):
 
         label = tk.Label(self.frame_entry, text="Username:")
@@ -273,6 +286,7 @@ class PlayerWindow(tk.Toplevel):
         self.entry.grid(row=0, column=1)
         label.grid(row=0, column=0)
         button_addPlayer.grid(row=1, column=1)
+
 
     def delete_player(self, item):
 
@@ -285,6 +299,7 @@ class PlayerWindow(tk.Toplevel):
 
         self.label_message['text'] = username + " successfully deleted"
         self.update_records()
+
 
     def select_player(self, item):
 
@@ -306,6 +321,7 @@ class PlayerWindow(tk.Toplevel):
 
         self.selectTree.insert('', 'end', text=username, image=img)
 
+
     def remove_player(self, item):
 
         if (item == ()):
@@ -319,6 +335,7 @@ class PlayerWindow(tk.Toplevel):
 
         self.selectTree.images.pop(username)
         self.update_records()
+
 
     def add_player(self, username):
 
@@ -342,7 +359,6 @@ class PlayerWindow(tk.Toplevel):
 
         imgNames = ['images/X.png', 'images/O.jpg', 'images/spade.jpg', 'images/diamond.png', 'images/club.png']
 
-        print(self.isChecked)
 
         if(self.isChecked.get()):
             for i, player in enumerate(players):
@@ -357,16 +373,22 @@ class PlayerWindow(tk.Toplevel):
 
         self.withdraw()
 
+
+
     def change_icon(self, item):
 
+        #Check if a user is selected
         if (item == ()):
             self.label_message['text'] = "Please select an entry before attempting to change icon"
             return
 
         username = self.dbTree.item(item, "text")
 
+        cwd = os.getcwd() #Get current working directory of file
+
+        #Open a file dialog for user to select photo
         try:
-            filename = tk.filedialog.askopenfilename(initialdir="C:\PyCharmProjects\ticTacToe\images",
+            filename = tk.filedialog.askopenfilename(initialdir= cwd + "/images",
                                                      title="Select an image",
                                                      filetypes=(("png files", "*.png"), ("jpg files", "*.jpg")))
             db.update_icon(username, filename)
@@ -377,18 +399,22 @@ class PlayerWindow(tk.Toplevel):
         except(AttributeError):
             pass
 
+
+    #Update player list pulled from database
     def update_records(self):
 
+        #Delete entries from current display
         records = self.dbTree.get_children()
 
         for element in records:
             self.dbTree.delete(element)
 
+
+        #Refill tree with updated data
         db_rows = db.get_data()
-
-
         self.dbTree.images = {}
         self.dbTree.imageNames = {}
+
         for row in db_rows:
             imgName = row[5]
             img = Image.open(imgName)
@@ -400,6 +426,7 @@ class PlayerWindow(tk.Toplevel):
                 self.dbTree.insert('', 0, text=row[0], values=(row[1], row[2], row[3], row[4]), image=img)
                 self.dbTree.images[row[0]] = img
                 self.dbTree.imageNames[row[0]] = imgName
+
 
 
 
@@ -450,13 +477,12 @@ class BoardWindow(tk.Toplevel, Engine):
         self.create_labels()
         self.create_buttons()
 
-        #self.disable_buttons()
 
-      #  self.create_display(playerList, iconList)
 
     def scale_window(self):
 
         self.geometry("700x500+600+275")
+
 
     def load_images(self):
         for name in self.iconNames:
@@ -464,6 +490,7 @@ class BoardWindow(tk.Toplevel, Engine):
             img = img.resize((35, 35), Image.ANTIALIAS)
             img = ImageTk.PhotoImage(img)
             self.imgList.append(img)
+
 
     def create_board(self):
 
@@ -477,6 +504,7 @@ class BoardWindow(tk.Toplevel, Engine):
                 newButton['command'] = lambda row = rowIndex, col = colIndex, button = newButton: self.engine.updateBoard(row, col, button, self.imgList)
                 newButton.grid(row=rowIndex, column=colIndex, sticky="nsew")
                 self.buttonList.append(newButton)
+
 
     def create_labels(self):
 
@@ -494,6 +522,7 @@ class BoardWindow(tk.Toplevel, Engine):
             self.panelList[i].grid(row=i+1, column=0, sticky="NW")
             self.labelList[i].grid(row=i+1, column=1, sticky="NW", pady = (10, 0))
 
+
     def create_buttons(self):
 
         button_optionWindow = tk.Button(self.displayFrame, text = "Option Window", command = lambda: self.open_input_window())
@@ -507,9 +536,9 @@ class BoardWindow(tk.Toplevel, Engine):
         self.destroy()
         self.parent.deiconify()
 
+
     def restart_game(self):
         self.destroy()
         new_game = BoardWindow(self.parent, self.colCount, self.rowCount, self.numPlayers, self.tally2win, self.playerData)
 
-app = OptionWindow()
-app.mainloop()
+
